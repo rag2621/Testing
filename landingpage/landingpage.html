@@ -6,13 +6,15 @@
     <title>Ghor - Your Real Estate Solution</title>
     <link rel="stylesheet" href="./landingpage.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="nav-container">
             <div class="brand">
-                <img src="assets/logo.png" alt="Ghor Logo" class="logo">
+                <img src="./LOGO.png" alt="Ghor Logo" class="logo">
             </div>
             <div class="nav-links">
                 <a href="/landingpage" class="active">Home</a>
@@ -29,31 +31,116 @@
                     </svg>
                 </div>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <a href="/Login_profile">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                            <polyline points="10 17 15 12 10 7"></polyline>
-                            <line x1="15" y1="12" x2="3" y2="12"></line>
-                        </svg>
-                        Login
-                    </a>
-                    <a href="/signup_profile">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <line x1="20" y1="8" x2="20" y2="14"></line>
-                            <line x1="23" y1="11" x2="17" y2="11"></line>
-                        </svg>
-                        Sign Up
-                    </a>
+                    <button class="dropdown-btn login-btn" onclick="window.location.replace('/Login_profile')">Login</button>
+                    <button class="dropdown-btn signup-btn" onclick="window.location.replace('/signup_profile')">Signup</button>
                 </div>
             </div>
         </div>
     </nav>
+    <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('token');
+            if (!token) {
+                const navLinks = document.querySelector('.nav-links');
+                const careersLink = document.createElement('a');
+                careersLink.href = "/Careers";
+                careersLink.textContent = "Careers";
+                navLinks.appendChild(careersLink);
+            }
+        });
+    </script>
+    <style>
+        .start-listing-btn {
+            background: linear-gradient(135deg, #007BFF, #0056b3);
+            color: white;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0px 4px 10px rgba(0, 123, 255, 0.2);
+        }
+    
+        .start-listing-btn:hover {
+            background: linear-gradient(135deg, #0056b3, #004092);
+            transform: translateY(-2px);
+            box-shadow: 0px 6px 15px rgba(0, 86, 179, 0.3);
+        }
+    
+        .profile-icon {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #eeeeee;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    
+        .profile-icon:hover {
+            background: #dddddd;
+            transform: scale(1.1);
+        }
+    
+        .profile-dropdown {
+            display: none;
+            position: absolute;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            right: 0;
+        }
+    
+        .dropdown-btn {
+            width: 100%;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            color: white;
+        }
+    
+        .login-btn {
+            background: linear-gradient(135deg, #ff9a9e, #ff6a88);
+        }
+    
+        .login-btn:hover {
+            background: linear-gradient(135deg, #ff6a88, #ff3e6b);
+            transform: scale(1.05);
+        }
+    
+        .signup-btn {
+            background: linear-gradient(135deg, #42e695, #3bb2b8);
+            margin-top: 8px;
+        }
+    
+        .signup-btn:hover {
+            background: linear-gradient(135deg, #3bb2b8, #2b8a92);
+            transform: scale(1.05);
+        }
+    </style>
     
     
 
     <script>
+
+        function redirect(){
+            if(localStorage.getItem("type")=="broker"){
+                window.location.replace("/brokerpage");
+            }
+        }
+
+        window.onload=redirect;
+
+        
         document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem("token");
     const startListingBtn = document.getElementById("startListingBtn");
@@ -94,15 +181,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // Show username and logout button
             profileDropdown.innerHTML = `
-                <span class="username">${user}</span>
-                <a href="#" id="logoutBtn">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
-                        <polyline points="10 17 15 12 10 7"></polyline>
-                        <line x1="15" y1="12" x2="3" y2="12"></line>
-                    </svg>
-                    Logout
-                </a>
+    <span class="username">${user}</span>
+<button id="kycBtn" class="kyc-button" ">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M9 12l2 2 4-4"></path>
+    </svg>
+    Verify KYC
+</button>
+<a href="#" id="logoutBtn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+        <polyline points="10 17 15 12 10 7"></polyline>
+        <line x1="15" y1="12" x2="3" y2="12"></line>
+    </svg>
+    Logout
+</a>
             `;
 
             // Logout function
@@ -110,10 +204,22 @@ document.addEventListener("DOMContentLoaded", () => {
                 e.preventDefault();
                 localStorage.removeItem("token");
                 localStorage.removeItem("user");
+                localStorage.removeItem("Email");
                 location.reload();
             });
         }
+        document.getElementById("kycBtn").addEventListener("click",(e)=>{
+        e.preventDefault();
+        if(localStorage.getItem("KYC")=="Pending"){
+        window.location.replace("/auth/kyc");
+        }
+        else{
+            alert("Already verified");
+        }
+    })
     });
+
+    
 
     function toggleDropdown() {
         const dropdown = document.getElementById('profileDropdown');
@@ -453,6 +559,9 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
     </section>
 
+  
+    
+
     <!-- Services Section (Page 3) -->
     <section id="services" class="services">
         <div class="section-container">
@@ -535,6 +644,35 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         </div>
     </section>
+
+    <div id="map" style="width: 800px; height: 500px; margin: auto; border: 2px solid black;"></div>
+
+    <script>
+
+
+        const countries = [
+            { name: "Pakistan", lat: 30.3753, lon: 69.3451 },
+            { name: "Australia", lat: -25.2744, lon: 133.7751 },
+            { name: "USA", lat: 37.0902, lon: -95.7129 },
+            { name: "India", lat: 20.5937, lon: 78.9629 },
+            { name: "Germany", lat: 51.1657, lon: 10.4515 }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function () {
+        const map = L.map('map').setView([20, 0], 2); // Centered on the world
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        countries.forEach(country => {
+            L.marker([country.lat, country.lon])
+                .addTo(map)
+                .bindPopup(`<b>${country.name}</b>`);
+        });
+    });
+    </script>
+   
 
     <!-- Footer -->
     <footer class="footer">

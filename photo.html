@@ -114,7 +114,16 @@
 
     <div class="uploaded-images" id="uploadedImages"></div>
 
-    <script>
+    <script>  
+
+
+function preventBackNavigation() {
+    console.log(localStorage.getItem("propertyinfo"));
+}
+
+window.onload = preventBackNavigation;
+
+
         async function uploadImages() {
             const fileInput = document.getElementById("imageInput");
             if (!fileInput.files.length) {
@@ -145,6 +154,11 @@
                     const img = document.createElement("img");
                     img.src = url;
                     uploadedImagesDiv.appendChild(img);
+                    setTimeout(()=>{
+                        window.close();
+
+                    },1000);
+                  
                 });
 
             } catch (error) {
@@ -156,6 +170,7 @@
         async function uploadSingleImage(file) {
             const formData = new FormData();
             formData.append("image", file);
+            formData.append("id",localStorage.getItem("propertyinfo"));
 
             const response = await fetch("/upload", { method: "POST", body: formData });
             const data = await response.json();

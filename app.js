@@ -13,6 +13,21 @@ const multer = require('multer');
 const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const cloudinary = require('./cloudinary.js');
 const Up=require("./upload.js");
+const { v4: uuidv4 } = require('uuid');
+const inter=require("./Interest.js");
+const brok=require("./broker.js");
+const car=require("./Career.js");
+const Tesseract = require("tesseract.js");
+
+const dest = multer.diskStorage({
+    destination: (req, file, cb) => {
+      cb(null, "uploads/"); // ✅ Images "uploads/" folder me store hongi
+    },
+    filename: (req, file, cb) => {
+      cb(null, Date.now() + path.extname(file.originalname)); // Unique filename
+    },
+  });
+const up = multer({ dest: "uploads/" });
 
 dotenv.config();
 
@@ -66,7 +81,92 @@ router.get("/test", (req, res) => {
     res.json({ message: "✅ Router is working!" });
 });
 const GOOGLE_API_KEY = 'AIzaSyAZXp1qf2pU3pkiqavT6u-WSqFxp8ij0ec';
+app.get("/api/properties/:id", async (req, res) => {
+    try {
+        const {id}=req.params;
+        const property = await Up.findOne({PropertyId:id});
+        if (!property) return res.status(404).json({ error: "Property not found" });
+        res.json(property).status(200);
+    } catch (error) {
+        res.status(500).json({ error: "Server error" });
+    }
+});
 
+
+app.use(express.json());
+
+// KYC Verification Route
+app.post("/verify-kyc", up.single("document"), async (req, res) => {
+    const { name, dob, idNumber,Email } = req.body; // User-provided details (name, dob, idNumber)
+  const imagePath = req.file.path; // Uploaded image file path
+
+console.log(Email);
+
+  try {
+    // Extract text from the uploaded image
+    const { data: { text } } = await Tesseract.recognize(imagePath, "eng");
+
+    // Debugging: log the extracted text
+    console.log("Extracted Text:", text);
+
+    // Convert the extracted text to lowercase for easier matching
+    const extractedText = text.toLowerCase();
+
+    // Validate Name (Check if the name exists in extracted text)
+    const isNameValid = extractedText.includes(name.toLowerCase());
+
+    // Format and validate DOB
+    const dobRegex = /\d{2}[-/]\d{2}[-/]\d{4}/; // Regex to find date format mm-dd-yyyy or mm/dd/yyyy
+    const extractedDob = extractedText.match(dobRegex) ? extractedText.match(dobRegex)[0] : null;
+
+    // If a date is found, convert it to dd/mm/yyyy format
+    let formattedExtractedDob = null;
+    if (extractedDob) {
+      // Convert to dd/mm/yyyy format
+      const dateParts = extractedDob.split(/[-/]/); // Split by either '-' or '/'
+      if (dateParts.length === 3) {
+        // If mm-dd-yyyy or mm/dd/yyyy, swap the parts to dd/mm/yyyy
+        formattedExtractedDob = `${dateParts[1]}/${dateParts[0]}/${dateParts[2]}`;
+      }
+    }
+    function convertDate(isoDate) {
+        const parts = isoDate.split("-");
+        return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    }
+    const formattedDate = convertDate(dob);
+    // Validate DOB (Check if formatted date matches the user-provided DOB)
+    const isDOBValid = extractedText.includes(formattedDate );
+
+    // Validate ID Number (Check if ID Number exists in the extracted text)
+
+    function formatAadhaar(number) {
+        return number.replace(/(\d{4})(\d{4})(\d{4})/, "$1 $2 $3");
+    }
+    const formattedNumber = formatAadhaar(idNumber);
+    const isIDValid = extractedText.includes(formattedNumber);
+console.log(isNameValid);
+console.log(isDOBValid);
+console.log(formattedDate );
+
+    // If all validations pass, return success
+    if (isNameValid && isDOBValid && isIDValid) {
+        const result = await Schema.updateOne(
+            { Email: Email },  // Filter (Find user by email)
+            { $set: { KYC:"Approved" } } // Update username
+        );
+      return res.json({ status: "approved", message: "KYC Verified Successfully" });
+     
+
+    } else {
+      return res.json({
+        status: "rejected",
+        message: "KYC Validation Failed. Please check your details.",
+      });
+    }
+  } catch (error) {
+    return res.status(500).json({ error: "Error processing KYC document" });
+  }
+});
 
 app.get("/api/address-suggestions",verifyToken, async (req, res) => {
     const query = req.query.query;
@@ -93,7 +193,8 @@ app.post('/upload', upload.single('image'), async (req, res) => {
         }
         
         res.json({ imageUrl: req.file.path });
-        Up.updateOne({Title:"OMAXE"}, {$push: { Images: req.file.path }}).then(()=>{
+        console.log(req.body.id);
+        Up.updateOne({PropertyId:req.body.id}, {$push: { Images: req.file.path }}).then(()=>{
             console.log("updated");
         });
         
@@ -119,31 +220,70 @@ app.get('/upload', upload.single('image'), async (req, res) => {
     }
 });
 
-router.post('/listing/propertyinfo',(req,res)=>{
+app.post('/interest',async(req,res)=>{
 
-    const pinf=req.body;
+    const {Name,Email,Phone,PropertyId}=req.body;
+
+  const det= await inter.create({Name:Name,Email:Email,Phone:Phone,PropertyId:PropertyId});
+
+  if(det){
+
+    res.json({status:"OK"});
+  }
+    
+})
+
+router.post('/listing/propertyinfo', async (req,res)=>{
+
+    let pinf=req.body;
     console.log(pinf);
+     const id=uuidv4();
+  const np=await  Up.create({Title:pinf.title,Type:pinf.propertyType,Bed:pinf.bedrooms,Bath:pinf.bathrooms, City:pinf.city,Location:pinf.location,Area:pinf.area,Description:pinf.description,PropertyId:id,Amenities:pinf.amenities,Email:pinf.Email});
+       
+    console.log("data sent",np);
 
-    Up.create({Title:pinf.title,Type:pinf.propertyType,Bed:pinf.bedrooms,Bath:pinf.bathrooms,Location:pinf.location,Area:pinf.area,Description:pinf.description}).then(()=>{
-        console.log("data sent");
+        res.json({PId:id});
+        
     });
 
 
-});
 
-router.get("/listing/properties", (req, res) => {
+
+router.get("/listing/properties", async (req, res) => {
     const { search, type } = req.query;
-    res.json({ City: search, Type: type });
+
+    const data= await Up.find({City:search,Type:type});
+    res.json(data);
+
+
+    
+
+
+    
 });
 
 router.post("/user/signup", async (req, res) => {
     try {
-        const { uname, email, password } = req.body;
+        const { uname, email, password,KYC } = req.body;
         const existingUser = await Schema.findOne({ Email: email });
         if (existingUser) return res.status(400).json({ message: "Account already exists" });
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        await Schema.create({ Username: uname, Email: email, Pass: hashedPassword });
+        await Schema.create({ Username: uname, Email: email, Pass: hashedPassword ,KYC:KYC});
+        res.status(201).json({ message: "Signup successful" });
+    } catch (error) {
+        res.status(500).json({ error: "Server Error" });
+    }
+});
+
+app.post("/broker/signup",async (req,res)=>{
+    try {
+        const { uname, email, password,Country,City,KYC } = req.body;
+        const existingUser = await brok.findOne({ Email: email });
+        if (existingUser) return res.status(400).json({ message: "Account already exists" });
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await brok.create({ Name:uname , Email: email, Pass: hashedPassword,Country:Country,City:City ,KYC:KYC});
         res.status(201).json({ message: "Signup successful" });
     } catch (error) {
         res.status(500).json({ error: "Server Error" });
@@ -165,7 +305,7 @@ router.post("/user/login", async (req, res) => {
            console.log(dbfetch.Username);
           const t=generateToken(dbfetch);
            console.log(t);
-           res.status(201).json({ message: 'successful',Token:t, Username:dbfetch.Username });
+           res.status(201).json({ message: 'successful',Token:t, Username:dbfetch.Username,Email:dbfetch.Email, Kyc:dbfetch.KYC });
    
          }
      
@@ -176,12 +316,120 @@ router.post("/user/login", async (req, res) => {
    
 });
 
-router.get('/photo/up',(req,res)=>{
-    res.sendFile(path.join(__dirname,'photo.html'));
+router.post("/broker/login", async (req, res) => {
+  try {
+
+      const   usercred=req.body;
+ 
+     const  dbfetch=await  brok.findOne({Email:usercred.Email});
+       console.log(dbfetch);
+   
+ 
+         const isMatch = await bcrypt.compare(usercred.Pass, dbfetch.Pass);
+       if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
+       else{
+         console.log(dbfetch.Name);
+        const t=generateToken(dbfetch);
+         console.log(t);
+         res.status(201).json({ message: 'successful',Token:t, Username:dbfetch.Name,Email:dbfetch.Email, Kyc:dbfetch.KYC,City:dbfetch.City });
+ 
+       }
+   
+     } catch (error) {
+         res.status(400).json({ message: "Email does not exist" });
+     }
+ 
+ 
 });
 
 
 
+
+
+
+router.get('/photo/up',(req,res)=>{
+    res.sendFile(path.join(__dirname,'photo.html'));
+   
+});
+
+app.get('/auth/kyc',(req,res)=>{
+    res.sendFile(path.join(__dirname,'kyc.html'));
+})
+
+app.get('/api/countrycode/:cname',async(req,res)=>{
+
+  const {cname}=req.params;
+  
+  async function getCities(countryName) {
+    try {
+        const response = await fetch("https://countriesnow.space/api/v0.1/countries");
+        const data = await response.json();
+        
+        // Find the country and get its cities
+        const countryData = data.data.find(c => c.country === countryName);
+        if (countryData) {
+            return countryData.cities;
+        } else {
+            return ["No cities found"];
+        }
+    } catch (error) {
+        console.error("Error fetching cities:", error);
+        return ["Error fetching cities"];
+    }
+}
+
+// Example Usage
+getCities(cname).then(cities => res.json(cities));
+  
+
+
+});
+
+app.get('/api/broker-properties/:City', async (req,res)=>{
+  const {City}=req.params;
+
+   const data= await Up.find({City:City});
+
+   res.json(data);
+
+
+
+});
+
+app.get('/api/broker-properties/yourlisting/:Email', async (req,res)=>{
+  const {Email}=req.params;
+
+   const data= await Up.find({Email:Email});
+
+   res.json(data);
+
+
+
+});
+
+app.get('/api/interests/:ID', async (req,res)=>{
+  const {ID}=req.params;
+
+   const data= await inter.find({PropertyId:ID});
+
+   res.json(data);
+
+
+
+})
+
+
+  
+app.post("/Careers/apply",async (req,res)=>{
+
+  const {Name,Email,Phone,Desc}=req.body;
+
+  let d= await car.create({Name:Name,Email:Email,Phone:Phone,Desc:Desc});
+
+  if(d){
+    res.json({status:"OK"});
+  }
+})
 
 
 const allowedPages = [
@@ -195,6 +443,11 @@ const allowedPages = [
     "User_Signup",
     "User_signin",
     "listinggg",
+    "brokerpage",
+    "Leads",
+    "yourlistings",
+    "Careers"
+    
 ];
 
 router.get("/:page", (req, res) => {
@@ -205,6 +458,9 @@ router.get("/:page", (req, res) => {
         res.status(404).send("Page Not Found");
     }
 });
+
+
+
 
 
 const PORT = 5500;

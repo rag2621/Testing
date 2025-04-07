@@ -3,375 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luxury Family Home - Ghor</title>
-    <link rel="stylesheet" href="listedproperty.css">
+    <title>Property Details</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.js"></script>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.15.0/mapbox-gl.css" rel="stylesheet" />
 </head>
-<body>
-    <!-- Navigation Bar -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="/" class="logo">
-                <img src="../logo.png" alt="Ghor Logo" class="logo-img">
-            </a>
-            
-            <div class="nav-links">
-                <a href="/landingpage">Home</a>
-                <a href="/listing">Listing</a>
-                <a href="/contact">Contact</a>
-            </div>
-            
-            <div class="nav-right">
-                <a href="tel:+918219594947" class="phone-number">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                    +91 8219594947
-                </a>
-                <div class="profile-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                        <circle cx="12" cy="7" r="4"></circle>
-                    </svg>
-                </div>
-            </div>
-        </div>
+<body style="font-family: 'Inter', sans-serif; margin: 0; background: #f4f4f4; padding: 20px;"> 
+
+    <!-- Navbar -->
+    <nav style="background: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <a href="/" style="font-size: 24px; font-weight: bold; text-decoration: none; color: #333;">Ghor</a>
+        <a href="/listing" style="text-decoration: none; color: #ff6f61; font-weight: 600;">Back to Listings</a>
     </nav>
 
-    <!-- Main Property Section -->
-    <main class="property-details">
-        <div class="container">
-            <div class="property-grid">
-                <div class="property-image">
-                    <img src="p5.png" alt="Luxury Family Home" id="propertyImage">
-                    <div class="slider-nav">
-                        <button class="slider-btn prev-btn" onclick="changeImage(-1)">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="15 18 9 12 15 6"></polyline>
-                            </svg>
-                        </button>
-                        <button class="slider-btn next-btn" onclick="changeImage(1)">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polyline points="9 18 15 12 9 6"></polyline>
-                            </svg>
-                        </button>
-                    </div>
-                    <div class="image-counter">
-                        <span id="currentImage">1</span>/<span id="totalImages">15</span>
-                    </div>
-                </div>
-                <div class="property-info">
-                    <h1>Luxury Family Home</h1>
-                    <div class="property-stats">
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                            </svg>
-                            4 Beds
-                        </span>
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
-                                <path d="M12 4v16"></path>
-                            </svg>
-                            1 Bath
-                        </span>
-                        <span>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            </svg>
-                            400 sqft
-                        </span>
-                    </div>
-                    <div class="location">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        Location
-                    </div>
-                    <div class="price">$10,000/-</div>
-                    <div class="booking-buttons">
-                        <button class="booking-btn">Booking</button>
-                        <button class="pro-booking-btn">Pro Booking</button>
-                    </div>
-                </div>
+    <!-- Main Container -->
+    <div style="display: flex; max-width: 1000px; margin: 30px auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);">
+
+        <!-- Left: Property Details -->
+        <div style="width: 55%; padding-right: 20px;">
+            
+            <!-- Image Slider -->
+            <div style="position: relative; overflow: hidden; border-radius: 10px;">
+                <img id="sliderImage" src="" alt="Property Image" style="width: 100%; height: 300px; object-fit: cover; border-radius: 10px;">
+                <button onclick="prevImage()" style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 10px; cursor: pointer;">⬅</button>
+                <button onclick="nextImage()" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: rgba(0, 0, 0, 0.5); color: white; border: none; padding: 10px; cursor: pointer;">➡</button>
             </div>
 
-            <!-- Additional Details -->
-            <div class="additional-details">
-                <h2>Property Details</h2>
-                <div class="details-content">
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                            <circle cx="12" cy="10" r="3"></circle>
-                        </svg>
-                        <span>Prime Location</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                            <line x1="3" y1="9" x2="21" y2="9"></line>
-                            <line x1="9" y1="21" x2="9" y2="9"></line>
-                        </svg>
-                        <span>Modular Kitchen</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 7v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h18a2 2 0 0 1 2 2z"></path>
-                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                        </svg>
-                        <span>Air Conditioning</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12.55a11 11 0 0 1 14.08 0"></path>
-                            <path d="M1.42 9a16 16 0 0 1 21.16 0"></path>
-                            <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
-                            <line x1="12" y1="20" x2="12" y2="20"></line>
-                        </svg>
-                        <span>Free WiFi</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
-                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
-                            <line x1="6" y1="1" x2="6" y2="4"></line>
-                            <line x1="10" y1="1" x2="10" y2="4"></line>
-                            <line x1="14" y1="1" x2="14" y2="4"></line>
-                        </svg>
-                        <span>Water Supply 24/7</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="7" width="20" height="15" rx="2" ry="2"></rect>
-                            <polyline points="17 2 12 7 7 2"></polyline>
-                        </svg>
-                        <span>Lift Available</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-                            <polyline points="14 2 14 8 20 8"></polyline>
-                            <line x1="16" y1="13" x2="8" y2="13"></line>
-                            <line x1="16" y1="17" x2="8" y2="17"></line>
-                            <polyline points="10 9 9 9 8 9"></polyline>
-                        </svg>
-                        <span>Legal Clearance</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                        </svg>
-                        <span>Gated Society</span>
-                    </div>
-                    <div class="detail-item">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <polyline points="12 6 12 12 16 14"></polyline>
-                        </svg>
-                        <span>24/7 Security</span>
-                    </div>
-                </div>
+            <!-- Property Info -->
+            <h1 id="propertyTitle" style="margin-top: 20px; font-size: 24px; color: #333;"></h1>
+            <p id="propertyDescription" style="font-size: 16px; color: #555; line-height: 1.6;"></p>
+
+            <div style="margin-top: 20px; font-size: 18px; font-weight: 600; color: #333;">
+                <p>📍 <strong>City:</strong> <span id="propertyCity"></span></p>
+                <p>🏠 <strong>Address:</strong> <span id="propertyAddress"></span></p>
+                <p>📏 <strong>Area:</strong> <span id="propertyArea"></span> sq.ft.</p>
+                <p>🛏 <strong>Beds:</strong> <span id="propertyBeds"></span> | 🛁 <strong>Bathrooms:</strong> <span id="propertyBaths"></span></p>
             </div>
 
-            <!-- Similar Properties -->
-            <section class="similar-properties">
-                <h2>Similar Properties</h2>
-                <div class="property-cards">
-                    <!-- Property Card 1 -->
-                    <div class="property-card">
-                        <div class="tags">
-                            <span class="tag sale">FOR SALE</span>
-                        </div>
-                        <div class="card-info">
-                            <h3>Luxury Family Home</h3>
-                            <div class="location">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                <span>North New Jersey</span>
-                            </div>
-                            <div class="stats">
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                    </svg>
-                                    4 Beds
-                                </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
-                                        <path d="M12 4v16"></path>
-                                    </svg>
-                                    2 Baths
-                                </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    </svg>
-                                    1,200 sqft
-                                </span>
-                            </div>
-                            <div class="price">$12,000</div>
-                        </div>
-                    </div>
+            <!-- Amenities -->
+            <div style="margin-top: 20px; font-size: 18px; font-weight: 600; color: #333;">
+                <p>🏠 <strong>Amenities:</strong> <span id="propertyAmenities"></span></p>
+            </div>
 
-                    <!-- Property Card 2 -->
-                    <div class="property-card">
-                        <div class="tags">
-                            <span class="tag sale">FOR SALE</span>
-                        </div>
-                        <div class="card-info">
-                            <h3>Skyper Pool Apartment</h3>
-                            <div class="location">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                <span>South City Beach</span>
-                            </div>
-                            <div class="stats">
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                    </svg>
-                                    3 Beds
-                                </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
-                                        <path d="M12 4v16"></path>
-                                    </svg>
-                                    2 Baths
-                                </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    </svg>
-                                    1,100 sqft
-                                </span>
-                            </div>
-                            <div class="price">$15,000</div>
-                        </div>
-                    </div>
-
-                    <!-- Property Card 3 -->
-                    <div class="property-card">
-                        <div class="tags">
-                            <span class="tag rent">FOR RENT</span>
-                        </div>
-                        <div class="card-info">
-                            <h3>North Dillard Street</h3>
-                            <div class="location">
-                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                                <span>Bell Shoals Rd</span>
-                            </div>
-                            <div class="stats">
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                    </svg>
-                                    4 Beds
-                                </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5 4h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"></path>
-                                        <path d="M12 4v16"></path>
-                                    </svg>
-                                    2 Baths
-                                </span>
-                                <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-                                    </svg>
-                                    400 sqft
-                                </span>
-                            </div>
-                            <div class="price">$250<span>/month</span></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <!-- Map Container -->
+            <div id="map" style="width: 100%; height: 300px; border-radius: 10px; margin-top: 20px;"></div>
         </div>
-    </main>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h4>About Us</h4>
-                    <p>Ghor is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#properties">Properties</a></li>
-                        <li><a href="#services">Services</a></li>
-                        <li><a href="#about">About</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact Us</h4>
-                    <p>Email: developing.ghor@gmail.com</p>
-                    <p>Phone: +91 77977 89073</p>
-                    <p>Address: khara, Punjab</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Ghor. All rights reserved.</p>
-            </div>
+        <!-- Right: Inquiry Form -->
+        <div style="width: 45%; padding: 20px; background: #f9f9f9; border-radius: 10px;">
+            <h2 style="text-align: center; color: #333;">Interested? Contact Us</h2>
+            <form id="inquiryForm" style="display: flex; flex-direction: column;" onsubmit="submitInquiry(event)">
+                <input type="text" id="name" placeholder="Full Name" required 
+                    style="margin-bottom: 10px; padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px;">
+                <input type="email" id="email" placeholder="Email" required 
+                    style="margin-bottom: 10px; padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px;">
+                <input type="tel" id="phone" placeholder="Phone Number" required 
+                    style="margin-bottom: 10px; padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px;">
+                <button type="submit" 
+                    style="background: #ff6f61; color: white; padding: 12px; font-size: 16px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer;">
+                    Submit Inquiry
+                </button>
+            </form>
         </div>
-    </footer>
+    </div>
+
     <script>
-        const images = [
-            './p5.png',
-            './p1.png',
-            './p2.png',
-            './p3.png',
-            './p4.png',
-            './p6.png',
-            './p7.png',
-            './p8.png',
-            './p9.png',
-            './p10.png',
-            './p11.png',
-            './p12.png',
-            './p13.png',
-            './p14.png',
-            './p15.png'
-        ];
-        
-        let currentIndex = 0;
-        const propertyImage = document.getElementById('propertyImage');
-        const currentImageSpan = document.getElementById('currentImage');
-        const totalImagesSpan = document.getElementById('totalImages');
-        
-        totalImagesSpan.textContent = images.length;
-        
-        function changeImage(direction) {
-            currentIndex = (currentIndex + direction + images.length) % images.length;
-            propertyImage.src = images[currentIndex];
-            currentImageSpan.textContent = currentIndex + 1;
+        let property, currentImageIndex = 0;
+
+        async function fetchPropertyDetails() {
+            const propertyId = localStorage.getItem("Interest");
+            if (!propertyId) {
+                alert("No property selected!");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/properties/${propertyId}`);
+                property = await response.json();
+                if (!property) {
+                    alert("Property not found!");
+                    return;
+                }
+                displayProperty(property);
+            } catch (error) {
+                console.error("Error fetching property:", error);
+                alert("Failed to fetch property details.");
+            }
         }
-        
-        // Preload images
-        images.forEach(src => {
-            const img = new Image();
-            img.src = src;
-        });
+
+        function displayProperty(property) {
+            document.getElementById("propertyTitle").innerText = property.Title;
+            document.getElementById("propertyDescription").innerText = property.Description || "No description available.";
+            document.getElementById("propertyCity").innerText = property.City;
+            document.getElementById("propertyAddress").innerText = property.Location;
+            document.getElementById("propertyArea").innerText = property.Area;
+            document.getElementById("propertyBeds").innerText = property.Bed;
+            document.getElementById("propertyBaths").innerText = property.Bath;
+            document.getElementById("sliderImage").src = property.Images?.[0] || "https://via.placeholder.com/900x400?text=No+Image+Available";
+
+            // Display Amenities
+            const amenitiesList = property.Amenities?.join(', ') || "No amenities available.";
+            document.getElementById("propertyAmenities").innerText = amenitiesList;
+        }
+
+        function prevImage() {
+            if (!property || !property.Images.length) return;
+            currentImageIndex = (currentImageIndex - 1 + property.Images.length) % property.Images.length;
+            document.getElementById("sliderImage").src = property.Images[currentImageIndex];
+        }
+
+        function nextImage() {
+            if (!property || !property.Images.length) return;
+            currentImageIndex = (currentImageIndex + 1) % property.Images.length;
+            document.getElementById("sliderImage").src = property.Images[currentImageIndex];
+        }
+
+        async function submitInquiry(event) {
+            event.preventDefault();
+            const confirm = await fetch('/interest', {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    Name: document.getElementById("name").value,
+                    Email: document.getElementById("email").value,
+                    Phone: document.getElementById("phone").value,
+                    PropertyId: localStorage.getItem("Interest")
+                }),
+            });
+
+            const status = await confirm.json();
+
+            if (status.status == "OK") {
+                alert("Details submitted");
+            } else {
+                alert("Sorry, some error occurred.");
+            }
+        }
+
+        window.onload = fetchPropertyDetails;
     </script>
+
 </body>
-</html> 
+</html>

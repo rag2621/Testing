@@ -111,6 +111,8 @@
 
                     localStorage.setItem("token",data.Token);
                     localStorage.setItem("username",data.Username);
+                    localStorage.setItem("Email",data.Email);
+                    localStorage.setItem("KYC",data.Kyc);
 
                     responseMessage.textContent = data.message || "Something went wrong!";
                     responseMessage.style.color = response.ok ? "green" : "red";

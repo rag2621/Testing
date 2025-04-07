@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Internship Application | Ghor</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      background: linear-gradient(to bottom right, #e0eafc, #cfdef3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 40px;
+      padding: 0 20px;
+    }
+
+    .header h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      background: linear-gradient(to right, #007bff, #00c6ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 14px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: #444;
+      max-width: 600px;
+      margin: auto;
+      line-height: 1.6;
+    }
+
+    .form-container {
+      backdrop-filter: blur(12px);
+      background: rgba(255, 255, 255, 0.65);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 520px;
+      transition: all 0.3s ease;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin: 12px 0 6px;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input, textarea, select {
+      padding: 12px 14px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.8);
+      transition: border 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
+      outline: none;
+    }
+
+    textarea {
+      height: 130px;
+      resize: none;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 14px;
+      background: linear-gradient(to right, #007bff, #00c6ff);
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);
+    }
+
+    .success-message,
+    .error-message {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+    }
+
+    .success-message {
+      color: #155724;
+      background-color: #d4edda;
+    }
+
+    .error-message {
+      color: #721c24;
+      background-color: #f8d7da;
+    }
+
+    @media (max-width: 500px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .form-container {
+        padding: 30px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>We are Roofly, we do not care about your academics and background.</h1>
+    <p>We care about who you are as a person. If you're curious, driven, and a team player — we want you on board. Tell us about yourself below!</p>
+  </div>
+
+  <div class="form-container">
+    <form id="internshipForm" enctype="multipart/form-data">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="contact">Contact Number</label>
+      <input type="tel" id="contact" name="contact" required>
+
+      <label for="gender">Gender</label>
+      <select id="gender" name="gender" required>
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+        <option value="other">Other</option>
+      </select>
+
+      <label for="age">Age</label>
+      <input type="number" id="age" name="age" required>
+
+      <label for="about">Brief Description About You</label>
+      <textarea id="about" name="about" placeholder="What excites you? Why do you want to join us?" required></textarea>
+
+      <label for="idProof">Upload ID Proof</label>
+      <input type="file" id="idProof" name="idProof" accept=".jpg,.jpeg,.png,.pdf" required>
+
+      <button type="submit">Apply Now 🚀</button>
+    </form>
+
+    <div class="success-message" id="successMessage">✅ Application submitted successfully!</div>
+    <div class="error-message" id="errorMessage">❌ Something went wrong. Please try again.</div>
+  </div>
+
+  <script>
+    const form = document.getElementById('internshipForm');
+    const successMessage = document.getElementById('successMessage');
+    const errorMessage = document.getElementById('errorMessage');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const res = await fetch('/Careers/apply', {
+          method: 'POST',
+          body: formData
+        });
+
+        const fres = await res.json();
+
+        if (fres.status == "OK") {
+          successMessage.style.display = 'block';
+          errorMessage.style.display = 'none';
+          form.reset();
+        } else {
+          throw new Error();
+        }
+      } catch (err) {
+        successMessage.style.display = 'none';
+        errorMessage.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

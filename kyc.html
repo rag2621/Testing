@@ -1,0 +1,90 @@
+<form id="kycForm" enctype="multipart/form-data" style="
+    max-width: 400px; 
+    margin: 20px auto; 
+    padding: 20px; 
+    background: #fff; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+">
+    <h2 style="margin-bottom: 15px; color: #333;">KYC Verification</h2>
+    
+    <input type="text" name="name" placeholder="Full Name" required style="
+        width: 100%; 
+        padding: 10px; 
+        margin: 10px 0; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        font-size: 16px;
+    ">
+
+    <input type="date" name="dob" required style="
+        width: 100%; 
+        padding: 10px; 
+        margin: 10px 0; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        font-size: 16px;
+    ">
+
+    <input type="text" name="idNumber" placeholder="ID Number" required style="
+        width: 100%; 
+        padding: 10px; 
+        margin: 10px 0; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        font-size: 16px;
+    ">
+
+    <input type="file" name="document" required style="
+        width: 100%; 
+        padding: 10px; 
+        margin: 10px 0; 
+        border: 1px solid #ccc; 
+        border-radius: 5px; 
+        font-size: 16px;
+        background: #f9f9f9;
+    ">
+
+    <button type="submit" style="
+        width: 100%;
+        padding: 12px; 
+        background: #007bff; 
+        color: #fff; 
+        border: none; 
+        border-radius: 5px; 
+        font-size: 18px; 
+        cursor: pointer;
+        transition: 0.3s;
+    " onmouseover="this.style.background='#0056b3'" onmouseout="this.style.background='#007bff'">
+        Submit KYC
+    </button>
+
+    <p id="kycStatus" style="margin-top: 15px; font-weight: bold; color: #333;"></p>
+</form>
+
+<script>
+document.getElementById("kycForm").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    console.log(localStorage.getItem("Email"));
+    let formData = new FormData(e.target);
+    formData.append("Email", localStorage.getItem("Email"));
+    let response = await fetch("/verify-kyc", {
+        method: "POST",
+        body: formData
+    });
+
+    let result = await response.json();
+    let statusElement = document.getElementById("kycStatus");
+    
+    statusElement.innerText = `KYC Status: ${result.status} - ${result.message}`;
+    if(result.status=="approved"){
+
+        localStorage.removeItem("token");
+        window.location.replace("/landingpage");;
+       
+
+    }
+    statusElement.style.color = result.status === "approved" ? "green" : "red";
+});
+</script>

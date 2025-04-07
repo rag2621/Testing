@@ -99,6 +99,7 @@ section {
 .brand {
     display: flex;
     align-items: center;
+    object-fit: cover;
 }
 
 .brand a {

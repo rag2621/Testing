@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ghor - Property Listings</title>
+  <link rel="stylesheet" href="broker_properties.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    .profile-dropdown {
+      position: relative;
+      cursor: pointer;
+    }
+    .profile-menu {
+      position: absolute;
+      right: 0;
+      top: 120%;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      border-radius: 8px;
+      min-width: 160px;
+      padding: 10px;
+      z-index: 1000;
+      display: none;
+    }
+    .profile-menu p {
+      margin: 0;
+      font-weight: 500;
+      padding: 8px;
+      text-align: center;
+      color: #333;
+    }
+    .logout-btn {
+      background: #e74c3c;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      width: 100%;
+      margin-top: 8px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    .logout-btn:hover {
+      background: #c0392b;
+    }
+    .profile-icon svg {
+      width: 28px;
+      height: 28px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="/" class="logo">
+        <img src="./LOGO.png" alt="Ghor Logo" class="logo-img">
+      </a>
+
+      <div class="nav-links">
+        <a href="/brokerpage">Home</a>
+        <a href="/yourlistings">My Listings</a>
+        <a href="/contact/contact.html">Contact</a>
+      </div>
+
+      <div class="nav-right">
+        <div class="profile-dropdown" onclick="toggleProfileDropdown()">
+          <div class="profile-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+          </div>
+          <div class="profile-menu" id="profile-menu">
+            <p id="username-display">User</p>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="tital_and_filter">
+    <div class="text">
+      <h1 id="username-heading">User!</h1>
+      <h2>These Properties are Listed by YOU</h2>
+    </div>
+    <div class="filter">
+      <div class="filter-container">
+        <button class="filter-btn active" onclick="filterProperties('all')">All Properties</button>
+        <button class="filter-btn" onclick="filterProperties('flate')">Flate</button>
+        <button class="filter-btn" onclick="filterProperties('pg')">PG</button>
+        <button class="filter-btn" onclick="filterProperties('sale')">Sale</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Property Section -->
+  <section class="property-section">
+    <div class="property-grid" id="property-grid"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>About Us</h4>
+          <p>Ghor is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+        </div>
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#properties">Properties</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h4>Contact Us</h4>
+          <p>Email: developing.ghor@gmail.com</p>
+          <p>Phone: +91 77977 89073</p>
+          <p>Address: khara, Punjab</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Ghor. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function toggleProfileDropdown() {
+      const menu = document.getElementById("profile-menu");
+      menu.style.display = menu.style.display === "block" ? "none" : "block";
+    }
+
+    function logout(e) {
+      e.stopPropagation();
+      localStorage.removeItem("username");
+      localStorage.removeItem("City");
+      window.location.href = "/login/login.html";
+    }
+
+    async function loadProperties() {
+      const res = await fetch(`/api/broker-properties/yourlisting/${localStorage.getItem("Email")}`);
+      const data = await res.json();
+      const container = document.getElementById('property-grid');
+
+      data.forEach(property => {
+        const card = document.createElement('a');
+        card.href = property.link;
+        card.className = 'property-card';
+        card.style.backgroundImage = `url('${property.Images[0]}')`;
+
+        card.innerHTML = `
+          <span class="tag">${property.Type}</span>
+          <div class="property-info">
+            <h3>${property.Title}</h3>
+            <p class="location">${property.Location}</p>
+            <p class="price">${property.price}</p>
+            <div class="property-stats">
+              <span>${property.Bed} Beds</span>
+              <span>${property.Bath} Baths</span>
+              <span>${property.Area}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    window.onload = async function () {
+      const username = localStorage.getItem("username");
+      if (username) {
+        document.getElementById("username-heading").textContent = username + "!";
+        document.getElementById("username-display").textContent = username;
+      }
+      await loadProperties();
+    };
+
+    window.addEventListener("click", function (e) {
+      if (!e.target.closest(".profile-dropdown")) {
+        document.getElementById("profile-menu").style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -5,34 +5,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Property Listing Form</title>
     <style>
-        body {
+          body {
             font-family: 'Poppins', sans-serif;
             background: url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1600') no-repeat center center/cover;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
         }
         .form-container {
-            width: 400px;
-            padding: 25px;
+            width: 420px;
+            padding: 30px;
             background: rgba(255, 255, 255, 0.9);
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: left;
             border-top: 5px solid #ff6f61;
             position: relative;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         .form-container h2 {
             margin-bottom: 20px;
             color: #333;
             font-weight: 600;
+            font-size: 24px;
+            text-align: center;
         }
         .form-container label {
             display: block;
-            text-align: left;
-            margin-top: 10px;
+            margin: 12px 0 6px;
             font-weight: 500;
             color: #555;
         }
@@ -40,9 +45,8 @@
         .form-container select, 
         .form-container textarea {
             width: 100%;
-            padding: 12px;
-            margin-top: 5px;
-            font-size: 14px;
+            padding: 14px;
+            font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 8px;
             background: #f9f9f9;
@@ -52,8 +56,8 @@
         .form-container select:focus, 
         .form-container textarea:focus {
             border-color: #ff6f61;
-            outline: none;
             background: #fff;
+            outline: none;
         }
         .form-container input[type="submit"] {
             background: #ff6f61;
@@ -62,42 +66,64 @@
             font-size: 16px;
             cursor: pointer;
             margin-top: 20px;
-            transition: 0.3s;
+            padding: 12px;
             font-weight: 600;
+            border-radius: 8px;
         }
         .form-container input[type="submit"]:hover {
             background: #e65a50;
         }
-
-        /* Address Suggestion Box */
-        #autocomplete-suggestions {
-            position: absolute;
-            width: 100%;
-            border: 1px solid #ccc;
-            max-height: 200px;
-            overflow-y: auto;
+        .amenities-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        .amenities-container input {
             display: none;
-            background: white;
-            z-index: 100;
-            border-radius: 6px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            font-family: 'Poppins', sans-serif;
-            font-size: 14px;
-            text-align: left;
         }
-        #autocomplete-suggestions li {
-            padding: 10px;
+        .amenities-container input + label {
+            position: relative;
+            padding-left: 28px;
             cursor: pointer;
-            border-bottom: 1px solid #eee;
-            transition: background 0.3s ease-in-out;
         }
-        #autocomplete-suggestions li:last-child {
-            border-bottom: none;
+        .amenities-container input + label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            transition: background-color 0.3s, border-color 0.3s;
         }
-        #autocomplete-suggestions li:hover {
-            background: #ff6f61;
+        .amenities-container input:checked + label::before {
+            background-color: #ff6f61;
+            border-color: #ff6f61;
+        }
+        .amenities-container input:checked + label::after {
+            content: '\2713';
+            position: absolute;
+            left: 4px;
+            top: -1px;
+            font-size: 16px;
             color: white;
-            font-weight: 500;
+        }
+        @media (max-width: 768px) {
+            .form-container {
+                width: 90%;
+                padding: 20px;
+            }
+            .form-container h2 {
+                font-size: 20px;
+            }
+            .form-container input, 
+            .form-container select, 
+            .form-container textarea {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -145,6 +171,27 @@
 
             <label for="description">Property Description:</label>
             <textarea id="description" name="description" placeholder="Enter property details" rows="5" required></textarea>
+
+            <label>Amenities:</label>
+            <div class="amenities-container">
+                <input type="checkbox" id="parking" name="amenities" value="Parking">
+                <label for="parking">Parking</label>
+
+                <input type="checkbox" id="pool" name="amenities" value="Swimming Pool">
+                <label for="pool">Swimming Pool</label>
+
+                <input type="checkbox" id="gym" name="amenities" value="Gym">
+                <label for="gym">Gym</label>
+
+                <input type="checkbox" id="wifi" name="amenities" value="WiFi">
+                <label for="wifi">WiFi</label>
+
+                <input type="checkbox" id="garden" name="amenities" value="Garden">
+                <label for="garden">Garden</label>
+
+                <input type="checkbox" id="security" name="amenities" value="Security">
+                <label for="security">Security</label>
+            </div>
 
             <input type="submit" value="Submit Property" />
         </form>
@@ -196,6 +243,7 @@
 
         document.getElementById("propertyForm").addEventListener("submit", function (event) {
             event.preventDefault();
+        
 
             const propertyData = {
                 title: document.getElementById("title").value,
@@ -206,16 +254,30 @@
                 location: document.getElementById("autocomplete").value,
                 area: document.getElementById("area").value,
                 description: document.getElementById("description").value,
+                amenities: [],
+                Email:localStorage.getItem("Email"),
             };
+       
+            const amenitiesDiv = document.querySelector('.amenities-container');
+    const amenitiesCheckboxes = amenitiesDiv.querySelectorAll('input[type="checkbox"]'); // Access checkboxes inside this div
 
-            fetch('/listing/propertyinfo',{method:'POST', headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify(propertyData),
-                })
-
-          //  localStorage.setItem("propertyData", JSON.stringify(propertyData));
-            window.location.href = "/photo/up"; // Change to your page
+    amenitiesCheckboxes.forEach(function (checkbox) {
+        if (checkbox.checked) {
+            propertyData.amenities.push(checkbox.value);
+        }
+    });
+            fetch('/listing/propertyinfo', {
+                method: 'POST', 
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(propertyData),
+            }).then(res => {
+                res.json().then(ans => {
+                    localStorage.setItem("propertyinfo", ans.PId);
+                    window.open("/photo/up");
+                });
+            });
         });
     </script>
 </body>

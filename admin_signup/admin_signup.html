@@ -8,58 +8,91 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="admin_signup.css">
+    <style>
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            background-color: #fff;
+            color: #333;
+            outline: none;
+            transition: all 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .signup-button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #ff7e5f, #feb47b);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .signup-button:hover {
+            background: linear-gradient(135deg, #ff6a4d, #fd9a6f);
+        }
+    </style>
 </head>
 <body>
     <div class="container">
-        <!-- Left Section -->
         <div class="left-section">
             <div class="hero-content">
-                <h1 class="hero-title">
-                    Live<br>
-                    Your<br>
-                    Live<br>
-                    In<br>
-                    Your<br>
-                    way
-                </h1>
+                <h1 class="hero-title">Live<br>Your<br>Life<br>In<br>Your<br>Way</h1>
             </div>
             <div class="overlay"></div>
         </div>
-
-        <!-- Right Section -->
         <div class="right-section">
             <div class="signin-link">
-                <span>I have account, </span>
+                <span>I have an account, </span>
                 <a href="/signin">Sign in</a>
             </div>
-
             <div class="signup-container">
                 <h2 class="signup-title">Sign up</h2>
-                
-                <form class="signup-form" action="/broker/signup" method="POST">
+                <form id="signup-form">
                     <div class="form-group">
                         <label for="dealer-name">Property dealer name</label>
                         <input type="text" id="dealer-name" name="dealer-name" required>
                     </div>
-
                     <div class="form-group">
-                        <label for="email">email id</label>
+                        <label for="email">Email ID</label>
                         <input type="email" id="email" name="email" required>
                     </div>
-
-                    <div class="form-group">
-                        <label for="company">company name</label>
-                        <input type="text" id="company" name="company" required>
-                    </div>
-
                     <div class="form-group">
                         <label for="password">Your password</label>
                         <input type="password" id="password" name="password" required>
                     </div>
-
+                    <div class="form-group">
+                        <label for="country">Country</label>
+                        <select id="country" name="country" required>
+                            <option value="">Select a country</option>
+                            <option value="India">India</option>
+                            <option value="United States">United States</opti States>
+                            <option value="United Arab Emirates">UAE</option>
+                        </select>
+                        </div>
+                    <div class="form-group">
+                        <label for="city">City of Residence</label>
+                        <select id="city" name="city" >
+                            <option value="">Select Country First</option>
+                        </select>
+                    </div>
                     <button type="submit" class="signup-button">Sign up</button>
                 </form>
-
                 <div class="signin-prompt">
                     <p>I have an account, <a href="/signin">Sign in</a></p>
                 </div>
@@ -67,4 +100,96 @@
         </div>
     </div>
 </body>
-</html> 
+<script>
+
+document.getElementById("signup-form").addEventListener("submit", async function (event) {
+            event.preventDefault(); // ❌ Prevent Default Form Submission
+
+            const Username = document.getElementById('dealer-name').value;
+            const Email = document.getElementById('email').value;
+            const Pass = document.getElementById('password').value;
+            const Country=document.getElementById('country').value;
+            const City=document.getElementById('city').value;
+
+            console.log("Form Data:", { Username, Email, Pass }); // ✅ Debugging
+
+            try {
+                const response = await fetch("/broker/signup", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        uname: Username,
+                        email: Email,
+                        password: Pass,
+                        Country:Country,
+                        City:City,
+                        KYC:"Pending",
+                    })
+                });
+
+                const data = await response.json();
+                console.log("Success:", data);
+
+                if (response.ok) {
+                    if(data.message=="Signup successful"){
+                    alert("Signup Successful!");
+                    window.location.href = "/Login_profile";}
+                    else{
+                        alert("Email already in use");
+                    }
+                     
+                } else {
+                    alert(data.error || "Signup Failed!");
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Error occurred!");
+            }
+        });
+
+        let countries=[];
+    document.addEventListener("DOMContentLoaded", async function () {
+        const countryDropdown = document.getElementById("country");
+        const cityDropdown = document.getElementById("city");
+        const apiKey = "V6L+j4RZZ3ccX5RMto1BYQ==WueC0TJhOSCCflBu"; // Replace with your API key
+
+
+        
+      
+
+
+
+  
+    });
+
+    document.getElementById("country").addEventListener('change', async function(){
+
+const code=await fetch(`/api/countrycode/${this.value}`);
+const cc=await code.json();
+
+const countryName = this.value;
+    const cityDropdown = document.getElementById("city");
+
+    if (countryName) {
+        cityDropdown.innerHTML = '<option value="">Loading...</option>';
+        
+       
+        
+        cityDropdown.innerHTML = ''; // Clear previous options
+        cc.forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            cityDropdown.appendChild(option);
+        });
+    } else {
+        cityDropdown.innerHTML = '<option value="">Select Country First</option>';
+    }
+
+console.log(cc);
+
+});
+</script>
+</html>
