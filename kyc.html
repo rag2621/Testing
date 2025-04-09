@@ -69,6 +69,7 @@ document.getElementById("kycForm").addEventListener("submit", async (e) => {
     console.log(localStorage.getItem("Email"));
     let formData = new FormData(e.target);
     formData.append("Email", localStorage.getItem("Email"));
+    formData.append("Type", localStorage.getItem("type"));
     let response = await fetch("/verify-kyc", {
         method: "POST",
         body: formData
@@ -81,7 +82,12 @@ document.getElementById("kycForm").addEventListener("submit", async (e) => {
     if(result.status=="approved"){
 
         localStorage.removeItem("token");
-        window.location.replace("/landingpage");;
+        window.alert("Verification successfull, Please login again");
+        if(localStorage.getItem("type")){
+        window.location.replace("/brokerpage");}
+        else{
+            window.location.replace("/landingpage");
+        }
        
 
     }

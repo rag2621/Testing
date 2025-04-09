@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ghor - Property Listings</title>
+  <title>Roofly - Property Listings</title>
   <link rel="stylesheet" href="broker_properties.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <style>
@@ -103,35 +103,37 @@
     <div class="property-grid" id="property-grid"></div>
   </section>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>About Us</h4>
-          <p>Ghor is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
-        </div>
-        <div class="footer-section">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#properties">Properties</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#about">About</a></li>
-          </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Contact Us</h4>
-          <p>Email: developing.ghor@gmail.com</p>
-          <p>Phone: +91 77977 89073</p>
-          <p>Address: khara, Punjab</p>
-        </div>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+          <div class="footer-content">
+              <div class="footer-section">
+                  <h4>About Us</h4>
+                  <p>Roofly is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+              </div>
+              <div class="footer-section">
+                  <h4>Quick Links</h4>
+                  <ul>
+                      <li><a href="/brokerpage">Home</a></li>
+                      
+              
+                      <li><a href="#about">About</a></li>
+                  </ul>
+              </div>
+              <div class="footer-section">
+                  <h4>Contact Us</h4>
+                  <p>Email: rooflyestates@gmail.com</p>
+                  <p>Phone: +91 77977 89073</p>
+                  <p>Address: 134-A, Guru Fateh Town, Chandigarh-Ludhiana Highway, Punjab</p>
+              </div>
+          </div>
+          <div class="footer-bottom">
+              <p>&copy; 2025 Roofly. All rights reserved.</p>
+          </div>
       </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Ghor. All rights reserved.</p>
-      </div>
-    </div>
   </footer>
+</body>
+</html> 
 
   <script>
     function toggleProfileDropdown() {
@@ -153,7 +155,7 @@
 
       data.forEach(property => {
         const card = document.createElement('a');
-        card.href = property.link;
+        card.href = "/intrusted_properties";
         card.className = 'property-card';
         card.style.backgroundImage = `url('${property.Images[0]}')`;
 
@@ -171,6 +173,15 @@
           </div>
         `;
         container.appendChild(card);
+        card.addEventListener('click', function (e) {
+  e.preventDefault(); // stops normal link behavior
+
+  // Store the property ID in localStorage
+  localStorage.setItem('Id', property.PropertyId);
+
+  // Navigate to the next page
+  window.location.href = '/intrusted_properties';
+});
       });
     }
 

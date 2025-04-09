@@ -1,13 +1,16 @@
 :root {
-    --primary-color: #ff3e3e;
-    --text-color: #333;
-    --text-light: #666;
-    --text-dark: #000;
-    --background-light: #fff;
-    --border-color: #e0e0e0;
-    --error-color: #dc3545;
-    --success-color: #28a745;
-    --overlay-color: rgba(0, 0, 0, 0.5);
+    --primary-color: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #60a5fa;
+    --secondary-color: #475569;
+    --accent-color: #f59e0b;
+    --background-color: #f8fafc;
+    --surface-color: #ffffff;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
+    --text-white: #ffffff;
+    --success-color: #22c55e;
+    --error-color: #ef4444;
 }
 
 * {
@@ -17,10 +20,12 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif;
-    line-height: 1.6;
-    color: var(--text-color);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    line-height: 1.5;
     min-height: 100vh;
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
 }
 
 .container {
@@ -28,16 +33,16 @@ body {
     min-height: 100vh;
 }
 
-/* Left Section Styles */
+/* Left Section */
 .left-section {
     flex: 1;
-    background-image: url('../assets/circuit-red.jpg');
+    background-image: url('img.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
     display: flex;
     align-items: center;
-    padding: 2rem;
+    padding: 3rem 1rem;
 }
 
 .overlay {
@@ -46,7 +51,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--overlay-color);
+    background: linear-gradient(to right, rgba(30, 41, 59, 0.85), rgba(30, 41, 59, 0.75));
     z-index: 1;
 }
 
@@ -54,36 +59,44 @@ body {
     position: relative;
     z-index: 2;
     color: white;
-    padding-left: 2rem;
+    text-align: left;
+    padding-left: 3rem;
+    max-width: 800px;
 }
 
 .hero-title {
-    font-size: 5rem;
-    font-weight: 700;
-    line-height: 1.2;
+    font-size: 5.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.03em;
+    color: var(--text-white);
 }
 
-/* Right Section Styles */
+/* Right Section */
 .right-section {
     flex: 1;
-    padding: 2rem 4rem;
-    background-color: var(--background-light);
+    padding: 3rem 4rem;
+    background-color: var(--surface-color);
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .sign-up-link {
-    text-align: right;
-    margin-bottom: 4rem;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
 }
 
 .sign-up-link span {
-    color: var(--text-light);
+    color: var(--text-secondary);
 }
 
 .sign-up-link a {
-    color: var(--text-dark);
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
     margin-left: 0.5rem;
@@ -91,39 +104,49 @@ body {
 
 .signin-container {
     max-width: 400px;
-    margin: 0 auto;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .signin-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
     margin-bottom: 2rem;
-    color: var(--text-dark);
+    text-align: center;
+}
+
+.signin-form {
+    width: 100%;
 }
 
 .form-group {
     margin-bottom: 1.5rem;
+    width: 100%;
 }
 
 label {
     display: block;
     margin-bottom: 0.5rem;
-    color: var(--text-light);
+    color: var(--text-secondary);
     font-size: 0.9rem;
 }
 
 input {
     width: 100%;
     padding: 0.8rem;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--text-secondary);
     border-radius: 8px;
     font-size: 1rem;
-    transition: border-color 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 input:focus {
     outline: none;
     border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.1);
 }
 
 .password-input {
@@ -137,13 +160,14 @@ input:focus {
     transform: translateY(-50%);
     background: none;
     border: none;
-    color: var(--text-light);
+    color: var(--text-secondary);
     cursor: pointer;
 }
 
 .eye-icon {
     width: 20px;
     height: 20px;
+    stroke-width: 1.5;
 }
 
 .password-options {
@@ -153,57 +177,59 @@ input:focus {
 }
 
 .forgot-password {
-    color: var(--text-light);
+    color: var(--primary-color);
     text-decoration: none;
     font-size: 0.9rem;
 }
 
-.forgot-password:hover {
-    color: var(--primary-color);
-}
-
-.signin-button {
+.signin {
     width: 100%;
     padding: 1rem;
-    background-color: var(--primary-color);
-    color: white;
+    background: linear-gradient(to right, var(--primary-color), var(--primary-dark));
+    color: var(--text-white);
     border: none;
     border-radius: 8px;
     font-size: 1rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px -1px rgba(37, 99, 235, 0.2);
     margin-top: 1rem;
 }
 
-.signin-button:hover {
-    background-color: #e63636;
+.signin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 8px -1px rgba(37, 99, 235, 0.3);
+}
+
+.response-message {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .signup-prompt {
     text-align: center;
     margin-top: 2rem;
-    display: none;
-}
-
-.signup-prompt p {
-    color: var(--text-light);
+    color: var(--text-secondary);
 }
 
 .signup-prompt a {
     color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
+    margin-left: 0.5rem;
 }
 
 /* Responsive Design */
 @media (max-width: 1024px) {
-    .right-section {
-        padding: 2rem;
-    }
-
     .hero-title {
         font-size: 4rem;
+    }
+    
+    .right-section {
+        padding: 2rem;
     }
 }
 
@@ -217,15 +243,7 @@ input:focus {
     }
 
     .right-section {
-        padding: 1.5rem;
-    }
-
-    .sign-up-link {
-        margin-bottom: 2rem;
-    }
-
-    .signup-prompt {
-        display: block;
+        padding: 2rem 1.5rem;
     }
 }
 

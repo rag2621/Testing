@@ -1,214 +1,382 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Internship Application | Ghor</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Join Our Team | Roofly</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --background: #ffffff;
+            --success: #22c55e;
+            --error: #ef4444;
+        }
 
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      background: linear-gradient(to bottom right, #e0eafc, #cfdef3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    .header {
-      text-align: center;
-      margin-bottom: 40px;
-      padding: 0 20px;
-    }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
 
-    .header h1 {
-      font-size: 2.6rem;
-      font-weight: 700;
-      background: linear-gradient(to right, #007bff, #00c6ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 14px;
-    }
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
 
-    .header p {
-      font-size: 1.1rem;
-      color: #444;
-      max-width: 600px;
-      margin: auto;
-      line-height: 1.6;
-    }
+        .header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 60px;
+        }
 
-    .form-container {
-      backdrop-filter: blur(12px);
-      background: rgba(255, 255, 255, 0.65);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
-      width: 90%;
-      max-width: 520px;
-      transition: all 0.3s ease;
-    }
+        .header h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: fadeIn 0.8s ease-out;
+        }
 
-    form {
-      display: flex;
-      flex-direction: column;
-    }
+        .header p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto;
+        }
 
-    label {
-      margin: 12px 0 6px;
-      font-weight: 600;
-      color: #333;
-    }
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            border-radius: 16px;
+            background: var(--background);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
 
-    input, textarea, select {
-      padding: 12px 14px;
-      font-size: 1rem;
-      border: 1px solid #ccc;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.8);
-      transition: border 0.3s ease, box-shadow 0.3s ease;
-    }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
 
-    input:focus, textarea:focus, select:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.2);
-      outline: none;
-    }
+        .form-group {
+            margin-bottom: 24px;
+        }
 
-    textarea {
-      height: 130px;
-      resize: none;
-    }
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
 
-    button {
-      margin-top: 25px;
-      padding: 14px;
-      background: linear-gradient(to right, #007bff, #00c6ff);
-      color: white;
-      font-size: 1rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
-    }
+        label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
 
-    button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(0, 123, 255, 0.5);
-    }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 1rem;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--background);
+            color: var(--text-primary);
+            transition: all 0.2s ease;
+        }
 
-    .success-message,
-    .error-message {
-      text-align: center;
-      margin-top: 20px;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 12px;
-      border-radius: 10px;
-      display: none;
-    }
+        input:hover, select:hover, textarea:hover {
+            border-color: var(--primary);
+        }
 
-    .success-message {
-      color: #155724;
-      background-color: #d4edda;
-    }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
 
-    .error-message {
-      color: #721c24;
-      background-color: #f8d7da;
-    }
+        input::placeholder, textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
 
-    @media (max-width: 500px) {
-      .header h1 {
-        font-size: 2rem;
-      }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 16px center;
+            background-size: 20px;
+            padding-right: 48px;
+        }
 
-      .form-container {
-        padding: 30px 20px;
-      }
-    }
-  </style>
+        textarea {
+            height: 160px;
+            resize: vertical;
+            min-height: 120px;
+            max-height: 300px;
+            line-height: 1.6;
+        }
+
+        input[type="file"] {
+            padding: 12px;
+            background: rgba(37, 99, 235, 0.02);
+            border: 2px dashed var(--border);
+            cursor: pointer;
+        }
+
+        input[type="file"]:hover {
+            background: rgba(37, 99, 235, 0.05);
+            border-color: var(--primary);
+        }
+
+        button {
+            width: 100%;
+            padding: 16px 24px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 32px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 24px;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 500;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .success-message {
+            background: rgba(34, 197, 94, 0.1);
+            color: var(--success);
+            border: 1px solid var(--success);
+        }
+
+        .error-message {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border: 1px solid var(--error);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 40px 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1.1rem;
+            }
+
+            button {
+                padding: 14px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
 </head>
 <body>
+    <div class="page-container">
+        <div class="header">
+            <h1>Join Our Professional Team</h1>
+            <p>Take the next step in your career with Ghor. We're looking for exceptional talent to help shape the future of real estate.</p>
+        </div>
 
-  <div class="header">
-    <h1>We are Roofly, we do not care about your academics and background.</h1>
-    <p>We care about who you are as a person. If you're curious, driven, and a team player — we want you on board. Tell us about yourself below!</p>
-  </div>
+        <div class="form-container">
+            <form id="internshipForm" class="form-grid" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="name">Full Name</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                </div>
 
-  <div class="form-container">
-    <form id="internshipForm" enctype="multipart/form-data">
-      <label for="name">Full Name</label>
-      <input type="text" id="name" name="name" required>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
 
-      <label for="email">Email Address</label>
-      <input type="email" id="email" name="email" required>
+                <div class="form-group">
+                    <label for="contact">Contact Number</label>
+                    <input type="tel" id="contact" name="contact" placeholder="Enter your phone number" required>
+                </div>
 
-      <label for="contact">Contact Number</label>
-      <input type="tel" id="contact" name="contact" required>
+                <div class="form-group">
+                    <label for="position">Position of Interest</label>
+                    <select id="position" name="position" required>
+                        <option value="" disabled selected>Select a position</option>
+                        <option value="software-engineer">Software Engineer</option>
+                        <option value="ui-designer">UI/UX Designer</option>
+                        <option value="product-manager">Product Manager</option>
+                        <option value="marketing">Marketing Specialist</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
 
-      <label for="gender">Gender</label>
-      <select id="gender" name="gender" required>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-      </select>
+                <div class="form-group">
+                    <label for="experience">Years of Experience</label>
+                    <select id="experience" name="experience" required>
+                        <option value="" disabled selected>Select experience level</option>
+                        <option value="entry">0-2 years</option>
+                        <option value="mid">2-5 years</option>
+                        <option value="senior">5+ years</option>
+                    </select>
+                </div>
 
-      <label for="age">Age</label>
-      <input type="number" id="age" name="age" required>
+                <div class="form-group">
+                    <label for="location">Preferred Location</label>
+                    <select id="location" name="location" required>
+                        <option value="" disabled selected>Select location</option>
+                        <option value="onsite">Onsite</option>
+                        <option value="remote">Remote</option>
+                        <option value="hybrid">Hybrid</option>
+                    </select>
+                </div>
 
-      <label for="about">Brief Description About You</label>
-      <textarea id="about" name="about" placeholder="What excites you? Why do you want to join us?" required></textarea>
+                <div class="form-group full-width">
+                    <label for="about">Professional Summary</label>
+                    <textarea id="about" name="about" 
+                        placeholder="Tell us about your relevant experience, skills, and what makes you a great fit for this role." 
+                        required></textarea>
+                </div>
 
-      <label for="idProof">Upload ID Proof</label>
-      <input type="file" id="idProof" name="idProof" accept=".jpg,.jpeg,.png,.pdf" required>
+                <div class="form-group full-width">
+                    <label for="resume">Upload Resume/CV</label>
+                    <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                </div>
 
-      <button type="submit">Apply Now 🚀</button>
-    </form>
+                <div class="form-group full-width">
+                    <button type="submit">Submit Application</button>
+                </div>
+            </form>
 
-    <div class="success-message" id="successMessage">✅ Application submitted successfully!</div>
-    <div class="error-message" id="errorMessage">❌ Something went wrong. Please try again.</div>
-  </div>
+            <div id="successMessage" class="message success-message">
+                ✨ Thank you for your application! Our team will review it and get back to you soon.
+            </div>
+            <div id="errorMessage" class="message error-message">
+                ❌ There was an error submitting your application. Please try again or contact support.
+            </div>
+        </div>
+    </div>
 
-  <script>
-    const form = document.getElementById('internshipForm');
-    const successMessage = document.getElementById('successMessage');
-    const errorMessage = document.getElementById('errorMessage');
+    <script>
+        const form = document.getElementById('internshipForm');
+        const successMessage = document.getElementById('successMessage');
+        const errorMessage = document.getElementById('errorMessage');
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = 'Submitting...';
 
-      const formData = new FormData(form);
+            const formData = new FormData(form);
 
-      try {
-        const res = await fetch('/Careers/apply', {
-          method: 'POST',
-          body: formData
+            try {
+                const res = await fetch('/Careers/apply', {
+                    method: 'POST',
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({Name:document.getElementById("name").value,Email:document.getElementById("email").value,Phone:document.getElementById("contact").value,Experience:document.getElementById("experience").value,Position:document.getElementById("position").value,Location:document.getElementById("location").value,Desc:document.getElementById("about").value})
+                });
+
+                const fres = await res.json();
+
+                if (fres.status == "OK") {
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    form.reset();
+                    successMessage.scrollIntoView({ behavior: 'smooth' });
+                } else {
+                    throw new Error();
+                }
+            } catch (err) {
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'block';
+                errorMessage.scrollIntoView({ behavior: 'smooth' });
+            } finally {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
         });
-
-        const fres = await res.json();
-
-        if (fres.status == "OK") {
-          successMessage.style.display = 'block';
-          errorMessage.style.display = 'none';
-          form.reset();
-        } else {
-          throw new Error();
-        }
-      } catch (err) {
-        successMessage.style.display = 'none';
-        errorMessage.style.display = 'block';
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>

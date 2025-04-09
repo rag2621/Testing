@@ -17,10 +17,10 @@
                 <h1 class="hero-title">
                     Live<br>
                     Your<br>
-                    Live<br>
+                    Life<br>
                     In<br>
                     Your<br>
-                    way
+                    Way
                 </h1>
             </div>
             <div class="overlay"></div>
@@ -36,15 +36,6 @@
             <div class="signup-container">
                 <h2 class="signup-title">Sign up</h2>
                 
-                <button class="google-signin">
-                    <img src="../assets/google-icon.svg" alt="Google" class="google-icon">
-                    Continue with Google
-                </button>
-
-                <div class="divider">
-                    <span>OR</span>
-                </div>
-
                 <form class="signup-form"  id="signup-form" >
                     <div class="form-group">
                         <label for="username">User name</label>
@@ -110,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     }
                      
                 } else {
-                    alert(data.error || "Signup Failed!");
+                    alert(data.error || "Account already exists!");
                 }
             } catch (error) {
                 console.error("Error:", error);

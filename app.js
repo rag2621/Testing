@@ -17,6 +17,7 @@ const { v4: uuidv4 } = require('uuid');
 const inter=require("./Interest.js");
 const brok=require("./broker.js");
 const car=require("./Career.js");
+const kyc=require("./kyc.js");
 const Tesseract = require("tesseract.js");
 
 const dest = multer.diskStorage({
@@ -97,10 +98,16 @@ app.use(express.json());
 
 // KYC Verification Route
 app.post("/verify-kyc", up.single("document"), async (req, res) => {
-    const { name, dob, idNumber,Email } = req.body; // User-provided details (name, dob, idNumber)
+    const { name, dob, idNumber,Email,Type } = req.body; // User-provided details (name, dob, idNumber)
   const imagePath = req.file.path; // Uploaded image file path
 
 console.log(Email);
+const ch= await kyc.findOne({ID:idNumber});
+
+if(ch){
+  return res.json({ status: "Already Exists or Already Verified", message: "ID number already Used" });
+
+}
 
   try {
     // Extract text from the uploaded image
@@ -149,11 +156,23 @@ console.log(isDOBValid);
 console.log(formattedDate );
 
     // If all validations pass, return success
-    if (isNameValid && isDOBValid && isIDValid) {
+    if ( isDOBValid && isIDValid) {
+      const ddd= await kyc.create({ID:idNumber});
+
+      if(Type=="broker"){
+        const result = await brok.updateOne(
+          { Email: Email },  // Filter (Find user by email)
+          { $set: { KYC:"Approved" } } // Update username
+      );
+        
+
+      }
+
+      else{
         const result = await Schema.updateOne(
             { Email: Email },  // Filter (Find user by email)
             { $set: { KYC:"Approved" } } // Update username
-        );
+        );}
       return res.json({ status: "approved", message: "KYC Verified Successfully" });
      
 
@@ -266,7 +285,10 @@ router.post("/user/signup", async (req, res) => {
     try {
         const { uname, email, password,KYC } = req.body;
         const existingUser = await Schema.findOne({ Email: email });
+        const brokeruser= await brok.findOne({Email:email});
         if (existingUser) return res.status(400).json({ message: "Account already exists" });
+        if (brokeruser) return res.status(400).json({ message: "Account already exists" });
+
 
         const hashedPassword = await bcrypt.hash(password, 10);
         await Schema.create({ Username: uname, Email: email, Pass: hashedPassword ,KYC:KYC});
@@ -280,7 +302,9 @@ app.post("/broker/signup",async (req,res)=>{
     try {
         const { uname, email, password,Country,City,KYC } = req.body;
         const existingUser = await brok.findOne({ Email: email });
+        const brokeruser= await Schema.findOne({Email:email});
         if (existingUser) return res.status(400).json({ message: "Account already exists" });
+        if (brokeruser) return res.status(400).json({ message: "Account already exists" });
 
         const hashedPassword = await bcrypt.hash(password, 10);
         await brok.create({ Name:uname , Email: email, Pass: hashedPassword,Country:Country,City:City ,KYC:KYC});
@@ -422,9 +446,11 @@ app.get('/api/interests/:ID', async (req,res)=>{
   
 app.post("/Careers/apply",async (req,res)=>{
 
-  const {Name,Email,Phone,Desc}=req.body;
+  console.log(req.body);
 
-  let d= await car.create({Name:Name,Email:Email,Phone:Phone,Desc:Desc});
+  const {Name,Email,Phone,Experience,Position,Location,Desc}=req.body;
+
+  let d= await car.create({Name:Name,Email:Email,Phone:Phone,Desc:Desc,Experience:Experience,Position:Position,Location:Location});
 
   if(d){
     res.json({status:"OK"});
@@ -446,7 +472,8 @@ const allowedPages = [
     "brokerpage",
     "Leads",
     "yourlistings",
-    "Careers"
+    "Careers",
+    "intrusted_properties"
     
 ];
 

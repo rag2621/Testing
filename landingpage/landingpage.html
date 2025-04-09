@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghor - Your Real Estate Solution</title>
+    <title>Roofly - Your Real Estate Solution</title>
     <link rel="stylesheet" href="./landingpage.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
@@ -14,7 +14,7 @@
     <nav class="navbar">
         <div class="nav-container">
             <div class="brand">
-                <img src="./LOGO.png" alt="Ghor Logo" class="logo">
+                <img src="./LOGO.png" alt="Roofly Logo" class="logo">
             </div>
             <div class="nav-links">
                 <a href="/landingpage" class="active">Home</a>
@@ -31,8 +31,8 @@
                     </svg>
                 </div>
                 <div class="profile-dropdown" id="profileDropdown">
-                    <button class="dropdown-btn login-btn" onclick="window.location.replace('/Login_profile')">Login</button>
-                    <button class="dropdown-btn signup-btn" onclick="window.location.replace('/signup_profile')">Signup</button>
+                    <button class="dropdown-btn login-btn" onclick="window.location.href='/Login_profile'">Login</button>
+                    <button class="dropdown-btn signup-btn" onclick="window.location.href='/signup_profile'">Signup</button>
                 </div>
             </div>
         </div>
@@ -211,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("kycBtn").addEventListener("click",(e)=>{
         e.preventDefault();
         if(localStorage.getItem("KYC")=="Pending"){
-        window.location.replace("/auth/kyc");
+        window.location.href="/auth/kyc";
         }
         else{
             alert("Already verified");
@@ -680,26 +680,26 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>About Us</h4>
-                    <p>Ghor is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+                    <p>Roofly is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
                 </div>
                 <div class="footer-section">
                     <h4>Quick Links</h4>
                     <ul>
-                        <li><a href="#home">Home</a></li>
-                        <li><a href="#properties">Properties</a></li>
-                        <li><a href="#services">Services</a></li>
+                        <li><a href="/landingpage">Home</a></li>
+                        
+                
                         <li><a href="#about">About</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h4>Contact Us</h4>
-                    <p>Email: developing.ghor@gmail.com</p>
+                    <p>Email: rooflyestates@gmail.com</p>
                     <p>Phone: +91 77977 89073</p>
-                    <p>Address: khara, Punjab</p>
+                    <p>Address: 134-A, Guru Fateh Town, Chandigarh-Ludhiana Highway, Punjab</p>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Ghor. All rights reserved.</p>
+                <p>&copy; 2025 Roofly. All rights reserved.</p>
             </div>
         </div>
     </footer>

@@ -30,13 +30,13 @@ body {
 /* Left Section Styles */
 .left-section {
     flex: 1;
-    background-image: url('../assets/circuit-red.jpg');
+    background-image: url('img.jpg');
     background-size: cover;
     background-position: center;
     position: relative;
     display: flex;
     align-items: center;
-    padding: 2rem;
+    padding: 3rem 1rem;
 }
 
 .overlay {
@@ -45,7 +45,7 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: var(--overlay-color);
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.2));
     z-index: 1;
 }
 
@@ -53,14 +53,19 @@ body {
     position: relative;
     z-index: 2;
     color: white;
-    padding-left: 2rem;
+    text-align: left;
+    padding-left: 3rem;
+    max-width: 800px;
 }
 
 .hero-title {
-    font-size: 5rem;
-    font-weight: 700;
-    line-height: 1.2;
+    font-size: 5.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
 }
 
 /* Right Section Styles */

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Sign In - Ghor</title>
+    <title>Admin Sign In - Roofly</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,10 +17,10 @@
                 <h1 class="hero-title">
                     Live<br>
                     Your<br>
-                    Live<br>
+                    Life<br>
                     In<br>
                     Your<br>
-                    way
+                    Way
                 </h1>
             </div>
             <div class="overlay"></div>
@@ -29,21 +29,21 @@
         <!-- Right Section -->
         <div class="right-section">
             <div class="sign-up-link">
-                <span>Don't have an account? </span>
+                <span>Don't have an account?</span>
                 <a href="/signup">Sign up</a>
             </div>
 
-            <div class="signin-container" id="signin-container">
-                <h2 class="signin-title">Sign in</h2>
+            <div class="signin-container">
+                <h2 class="signin-title">Welcome Back</h2>
                 
-                <form class="signin-form" id="signin-form" >
+                <form class="signin-form" id="signin-form">
                     <div class="form-group">
-                        <label for="username">Email</label>
-                        <input type="text" id="email" name="email" required>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="password">Your password</label>
+                        <label for="password">Password</label>
                         <div class="password-input">
                             <input type="password" id="password" name="password" required>
                             <button type="button" class="toggle-password" aria-label="Toggle password visibility">
@@ -54,29 +54,26 @@
                             </button>
                         </div>
                         <div class="password-options">
-                            <a href="/forgot-password" class="forgot-password">Forgot your password?</a>
+                            <a href="/forgot-password" class="forgot-password">Forgot password?</a>
                         </div>
                     </div>
 
-                    <button type="submit" class="signin" id="signin">Sign in</button>
+                    <button type="submit" class="signin">Sign in</button>
                 </form>
 
                 <div id="response-message" class="response-message"></div>
-
-                <div class="signup-prompt">
-                    <p>Don't have an account? <a href="/signup">Sign up</a></p>
-                </div>
             </div>
         </div>
     </div>
 
     <script>
-       
-          
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("signin-form").addEventListener("submit", async function (event) {
                 event.preventDefault();
-
+                if(localStorage.getItem("token")){
+                    window.alert("A session already Exists");
+                    return 0;
+                }
                 const Email = document.getElementById('email').value;
                 const Pass = document.getElementById('password').value;
                 const cred = { Email: Email, Pass: Pass };
@@ -94,17 +91,22 @@
                     const data = await response.json();
                     console.log("Success:", data);
 
-                    localStorage.setItem("token",data.Token);
-                    localStorage.setItem("username",data.Username);
-                    localStorage.setItem("Email",data.Email);
-                    localStorage.setItem("KYC",data.Kyc);
-                    localStorage.setItem("type","broker");
-                    localStorage.setItem("City",data.City);
+                   
 
                     responseMessage.textContent = data.message || "Something went wrong!";
                     responseMessage.style.color = response.ok ? "green" : "red";
-                    if(response.ok){
+                    if(response.ok) {
+                        localStorage.setItem("token", data.Token);
+                    localStorage.setItem("username", data.Username);
+                    localStorage.setItem("Email", data.Email);
+                    localStorage.setItem("KYC", data.Kyc);
+                    localStorage.setItem("type", "broker");
+                    localStorage.setItem("City", data.City);
                         window.location.replace("/brokerpage");
+                    }
+                    else{
+                        window.alert("Incorrect Credentials");
+                        window.location.href="/landingpage";
                     }
                 } catch (error) {
                     console.error("Error:", error);
@@ -113,8 +115,6 @@
                 }
             });
         });
-          
-
     </script>
 </body>
 </html> 

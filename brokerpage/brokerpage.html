@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ghor - Property Listings</title>
+  <title>Roofly - Property Listings</title>
   <link rel="stylesheet" href="broker_assigned_properties.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
@@ -30,7 +30,7 @@
       text-align: center;
       color: #333;
     }
-    .logout-btn {
+    .logout-btn, .kyc-btn {
       background: #e74c3c;
       color: #fff;
       border: none;
@@ -42,12 +42,26 @@
       font-weight: 500;
       transition: background 0.3s;
     }
-    .logout-btn:hover {
+    .logout-btn:hover, .kyc-btn:hover {
       background: #c0392b;
     }
     .profile-icon svg {
       width: 28px;
       height: 28px;
+    }
+    .refresh-btn {
+      background: #3498db;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      margin-left: 12px;
+      transition: background 0.3s;
+    }
+    .refresh-btn:hover {
+      background: #2980b9;
     }
   </style>
 </head>
@@ -63,7 +77,7 @@
         <a href="/brokerpage">Home</a>
         <a href="/yourlistings">My Listings</a>
         <a href="/listinggg">List Property</a>
-         <a href="/contact/contact.html">Contact</a>
+        <a href="/contact/contact.html">Contact</a>
       </div>
       
       <div class="nav-right">
@@ -77,6 +91,7 @@
           </div>
           <div class="profile-menu" id="profile-menu">
             <p id="username-display">null</p>
+            <button class="kyc-btn" onclick="checkKYC()">KYC</button>
             <button class="logout-btn" onclick="logout(event)">Logout</button>
           </div>
         </div>
@@ -87,7 +102,7 @@
   <div class="tital_and_filter">  
     <div class="text">
       <h1 id="username-heading">User</h1>
-      <h2>These Properties are assign by Roofly to you</h2>
+      <h2>These Properties are assigned by Roofly to you</h2>
     </div>
     <div class="filter">
       <div class="filter-container">
@@ -107,59 +122,80 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="footer-container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h4>About Us</h4>
-          <p>Ghor is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Us</h4>
+                <p>Roofly is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="/brokerpage">Home</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Us</h4>
+                <p>Email: rooflyestates@gmail.com</p>
+                <p>Phone: +91 77977 89073</p>
+                <p>Address: 134-A, Guru Fateh Town, Chandigarh-Ludhiana Highway, Punjab</p>
+            </div>
         </div>
-        <div class="footer-section">
-          <h4>Quick Links</h4>
-          <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#properties">Properties</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#about">About</a></li>
-          </ul>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Roofly. All rights reserved.</p>
         </div>
-        <div class="footer-section">
-          <h4>Contact Us</h4>
-          <p>Email: developing.ghor@gmail.com</p>
-          <p>Phone: +91 77977 89073</p>
-          <p>Address: khara, Punjab</p>
-        </div>
-      </div>
-      <div class="footer-bottom">
-        <p>&copy; 2025 Ghor. All rights reserved.</p>
-      </div>
     </div>
   </footer>
 
   <script>
+    if (!localStorage.getItem("token")) {
+      logout(event);
+      window.location.replace("/landingpage");
+    }
+
     function toggleProfileDropdown() {
       const menu = document.getElementById("profile-menu");
       menu.style.display = menu.style.display === "block" ? "none" : "block";
     }
 
     function logout(e) {
-      e.stopPropagation();
-      
-                    localStorage.removeItem("username");
-                    localStorage.removeItem("Email");
-                    localStorage.removeItem("KYC");
-                    localStorage.removeItem("type");
-                    localStorage.removeItem("City");
-                    localStorage.removeItem("token");
-      window.location.replace("/landingpage"); // update to your login page path
+      localStorage.removeItem("username");
+      localStorage.removeItem("Email");
+      localStorage.removeItem("KYC");
+      localStorage.removeItem("type");
+      localStorage.removeItem("City");
+      localStorage.removeItem("token");
+      localStorage.removeItem("assignedProperties");
+      window.location.replace("/landingpage");
+    }
+
+    function checkKYC() {
+      const kycStatus = localStorage.getItem("KYC");
+      if (kycStatus === "Approved") {
+        alert("Your KYC is already verified.");
+      } else {
+        window.location.href="/auth/kyc";
+      }
     }
 
     async function loadProperties() {
+      const container = document.getElementById('property-grid');
+      container.innerHTML = '';
+
       const res = await fetch(`/api/broker-properties/${localStorage.getItem("City")}`);
       const data = await res.json();
+      localStorage.setItem("assignedProperties", JSON.stringify(data));
+
+      renderProperties(data);
+    }
+
+    function renderProperties(data) {
       const container = document.getElementById('property-grid');
+      container.innerHTML = '';
 
       data.forEach(property => {
         const card = document.createElement('a');
-        card.href = property.link;
+        card.href = "/intrusted_properties";
         card.className = 'property-card';
         card.style.backgroundImage = `url('${property.Images[0]}')`;
 
@@ -176,8 +212,25 @@
             </div>
           </div>
         `;
+        card.addEventListener('click', function (e) {
+          e.preventDefault();
+          localStorage.setItem('Id', property.PropertyId);
+          window.location.href = '/intrusted_properties';
+        });
         container.appendChild(card);
       });
+    }
+
+    function filterProperties(type) {
+      const all = document.querySelectorAll('.filter-btn');
+      all.forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+
+      const stored = localStorage.getItem("assignedProperties");
+      if (!stored) return;
+      const data = JSON.parse(stored);
+      const filtered = type === 'all' ? data : data.filter(p => p.Type.toLowerCase() === type);
+      renderProperties(filtered);
     }
 
     window.onload = async function () {

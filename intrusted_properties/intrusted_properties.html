@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roofly - Property Listings</title>
+    <link rel="stylesheet" href="Intrusted_properties.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">
+                <img src="../logo.png" alt="Ghor Logo" class="logo-img">
+            </a>
+            
+            <div class="nav-links">
+                <a href="/landing_page/landingpage.html" id="home-link">Home</a>
+               
+               
+               
+                <a href="/contact/contact.html">Contact</a>
+            </div>
+            
+            <div class="nav-right">
+                <div class="profile-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contact-details">
+        <div class="contact-container">
+          <h2>Your Contact Details</h2>
+          <div class="contact-info">
+            <div class="info-item">
+              <span class="label">Name:</span>
+              <span class="value" id="contactName"></span>
+            </div>
+          
+            <div class="info-item">
+              <span class="label">Email:</span>
+              <span class="value" id="contactEmail"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    <script>
+ 
+  
+          document.getElementById('contactName').textContent = localStorage.getItem("username");
+         
+          document.getElementById('contactEmail').textContent = localStorage.getItem("Email");
+       
+      </script>
+
+    <section class="view-property-section">
+        <h2>View Property Requests</h2>
+        <div class="requests-list" id="requests-list">
+         
+          
+
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-container">
+          <div class="footer-content">
+              <div class="footer-section">
+                  <h4>About Us</h4>
+                  <p>Roofly is your trusted partner in finding the perfect property. We make real estate simple and accessible.</p>
+              </div>
+              <div class="footer-section">
+                  <h4>Quick Links</h4>
+                  <ul>
+                      <li><a href="/brokerpage">Home</a></li>
+                      
+              
+                      <li><a href="#about">About</a></li>
+                  </ul>
+              </div>
+              <div class="footer-section">
+                  <h4>Contact Us</h4>
+                  <p>Email: rooflyestates@gmail.com</p>
+                  <p>Phone: +91 77977 89073</p>
+                  <p>Address: 134-A, Guru Fateh Town, Chandigarh-Ludhiana Highway, Punjab</p>
+              </div>
+          </div>
+          <div class="footer-bottom">
+              <p>&copy; 2025 Roofly. All rights reserved.</p>
+          </div>
+      </div>
+  </footer>
+
+
+
+    <script>
+        fetch(`/api/interests/${localStorage.getItem('Id')}`)
+    .then(res => res.json())
+    .then(data => {
+      const container = document.getElementById('requests-list');
+
+      data.forEach(req => {
+        const item = document.createElement('div');
+        item.innerHTML = `
+          <div class="request-item" style="border: 1px solid #ccc; border-radius: 8px; margin-bottom: 16px; padding: 16px; background-color: #f9f9f9;">
+            <div class="request-info">
+              <div class="request-header" style="display: flex; justify-content: space-between; align-items: center;">
+                <h3 style="margin: 0; font-size: 1.2em;">${req.Name}</h3>
+                <span class="date" style="font-size: 0.9em; color: #666;">${req.date}</span>
+              </div>
+              <div class="request-details" style="margin-top: 8px;">
+                <p class="contact" style="margin: 4px 0;">${req.Phone}</p>
+                <p class="email" style="margin: 4px 0;">${req.Email}</p>
+                <p class="property" style="margin: 4px 0;">Property Id: ${localStorage.getItem("Id")}</p>
+              </div>
+            </div>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching request data:', error);
+    });
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Add an event listener to the "Home" link
+            document.getElementById('home-link').addEventListener('click', function(event) {
+                event.preventDefault(); // Prevent the default link behavior
+        
+                // Check if 'type' exists in localStorage
+                if (localStorage.getItem('type')) {
+                    // Redirect to broker-assigned properties page if 'type' is in localStorage
+                    window.location.href = '/brokerpage';
+                } else {
+                    // Otherwise, go to the landing page
+                    window.location.href = '/landingpage';
+                }
+            });
+        });
+            </script>
+</body>
+</html>
+

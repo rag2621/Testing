@@ -1,122 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ghor - Property Listings</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Roofly - Property Listings</title>
+  <link rel="stylesheet" href="./listing.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body style="font-family: 'Inter', sans-serif; margin: 0; background: #f4f4f4;">
 
-    <!-- Navbar -->
-    <nav style="background: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
-        <a href="/" style="font-size: 24px; font-weight: bold; text-decoration: none; color: #333;">Ghor</a>
-        <div style="display: flex; justify-content: center; flex-grow: 1;">
-            <a href="/landingpage" style="margin: 0 15px; text-decoration: none; color: #333; font-weight: 600;">Home</a>
-            <a href="/listing" style="margin: 0 15px; text-decoration: none; color: #ff6f61; font-weight: 600;">Properties</a>
-            <a href="/contact" style="margin: 0 15px; text-decoration: none; color: #333; font-weight: 600;">Contact</a>
-        </div>
-    </nav>
+  <!-- Navbar -->
+  <nav style="background: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+    <a href="/" style="font-size: 24px; font-weight: bold; text-decoration: none; color: #333;">Roofly</a>
+    <div style="display: flex; justify-content: center; flex-grow: 1;">
+      <a href="/landingpage" style="margin: 0 15px; text-decoration: none; color: #333; font-weight: 600;">Home</a>
+      <a href="/listing" style="margin: 0 15px; text-decoration: none; color: #ff6f61; font-weight: 600;">Properties</a>
+      <a href="/contact" style="margin: 0 15px; text-decoration: none; color: #333; font-weight: 600;">Contact</a>
+    </div>
+  </nav>
 
-    <!-- Search Section -->
-    <section style="padding: 20px; background: white; text-align: center;">
-        <form id="searchForm" onsubmit="handleSearch(event)" style="display: flex; max-width: 600px; margin: auto;">
-            <input type="text" id="searchInput" placeholder="Search location..." required style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px 0 0 5px;">
-            <select id="propertyType" style="padding: 10px; font-size: 16px; border: 1px solid #ddd;">
-                <option value="">Property Type</option>
-                <option value="house">House</option>
-                <option value="apartment">Apartment</option>
-                <option value="villa">Villa</option>
-                <option value="Flat">Flat</option>
-                <option value="PG">PG</option>
-            </select>
-            <button type="submit"  style="padding: 10px 15px; font-size: 16px; border: none; background: #ff6f61; color: white; border-radius: 0 5px 5px 0; cursor: pointer;  ">Search</button>
-        </form>
-    </section>
+  <!-- Search Section -->
+  <section style="padding: 20px; background: white; text-align: center;">
+    <form id="searchForm" onsubmit="handleSearch(event)" style="display: flex; max-width: 600px; margin: auto;">
+      <input type="text" id="searchInput" placeholder="Search location..." required style="flex: 1; padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 5px 0 0 5px;">
+      <select id="propertyType" style="padding: 10px; font-size: 16px; border: 1px solid #ddd;">
+        <option value="">Property Type</option>
+        <option value="house">House</option>
+        <option value="apartment">Apartment</option>
+        <option value="villa">Villa</option>
+        <option value="Flat">Flat</option>
+        <option value="PG">PG</option>
+      </select>
+      <button type="submit" style="padding: 10px 15px; font-size: 16px; border: none; background: #ff6f61; color: white; border-radius: 0 5px 5px 0; cursor: pointer;">Search</button>
+    </form>
+  </section>
 
-    <!-- Property Listings -->
-    <div id="cardContainer" style="display: flex; flex-wrap: wrap; justify-content: center; padding: 20px;"></div>
+  <!-- Property Listings -->
+  <section class="property-section">
+    <div id="no-properties-message" style="display: none; text-align: center; font-size: 18px; color: #ff6f61; padding: 20px;">
+      No properties found based on your search.
+    </div>
+    <div class="property-grid" id="property-grid"></div>
+  </section>
 
-    <script>
+  <script>
+    // Load properties from localStorage when the page is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+      if (localStorage.getItem("properties")) {
+        const properties = JSON.parse(localStorage.getItem("properties"));
+        if (properties.length === 0) {
+          document.getElementById('no-properties-message').style.display = 'block';
+        } else {
+          displayProperties(properties);
+        }
+      }
+    });
 
-//document.getElementById("searchForm").addEventListener("submit", handleSearch);
-       
-        document.addEventListener("DOMContentLoaded", () => {
-            if (localStorage.getItem("properties")) {
-                displayProperties(JSON.parse(localStorage.getItem("properties")));
-            }
+    // Function to display properties in the grid
+    function displayProperties(properties) {
+      const container = document.getElementById('property-grid');
+      const noPropertiesMessage = document.getElementById('no-properties-message');
+      
+      container.innerHTML = '';  // Clear the grid before adding new properties
+      noPropertiesMessage.style.display = properties.length === 0 ? 'block' : 'none';
+
+      properties.forEach(property => {
+        const card = document.createElement('a');
+        card.href = "/intrusted_properties";
+        card.className = 'property-card';
+        card.style.backgroundImage = `url('${property.Images[0]}')`;
+
+        card.innerHTML = `
+          <span class="tag">${property.Type}</span>
+          <div class="property-info">
+            <h3>${property.Title}</h3>
+            <p class="location">${property.Location}</p>
+            <p class="price">${property.price}</p>
+            <div class="property-stats">
+              <span>${property.Bed} Beds</span>
+              <span>${property.Bath} Baths</span>
+              <span>${property.Area}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+
+        // Add event listener for click on property card
+        card.addEventListener('click', function (e) {
+          e.preventDefault(); // Prevent normal link behavior
+
+          // Store the property ID in localStorage
+          localStorage.setItem('Interest', property.PropertyId);
+
+          // Navigate to the next page
+          window.location.href = '/listedproperty';
         });
+      });
+    }
 
-        function handleSearch(event) {
-            event.preventDefault();
-            console.log("hello");
-            
-            const searchInput = document.getElementById('searchInput').value;
-            const propertyType = document.getElementById('propertyType').value;
+    // Handle search form submission
+    async function handleSearch(event) {
+      event.preventDefault();
 
-            if (!searchInput) return;
+      let searchInput = document.getElementById('searchInput').value.trim();
+      const propertyType = document.getElementById('propertyType').value;
 
-            fetch(`/listing/properties?search=${encodeURIComponent(searchInput)}&type=${encodeURIComponent(propertyType)}`)
-                .then(res => res.json())
-                .then(data => {
-                    localStorage.setItem("properties", JSON.stringify(data));
-                    displayProperties(data);
-                    console.log(data);
-                    localStorage.setItem("Location",data.Location);
-                })
-                .catch(error => console.error('Error fetching properties:', error));
-        }
+      if (!searchInput) return;
 
-        function displayProperties(properties) {
-            let cardContainer = document.getElementById("cardContainer");
-            cardContainer.innerHTML = "";
+      // Clean input: remove spaces, capitalize first letter, rest lowercase
+      searchInput = searchInput
+        .toLowerCase()
+        .replace(/\s+/g, '')
+        .replace(/^./, c => c.toUpperCase());
 
-            properties.forEach(item => {
-                let card = document.createElement("div");
-                card.style = `
-                    background: white; 
-                    width: 30%; 
-                    min-width: 300px; 
-                    margin: 15px; 
-                    border-radius: 12px; 
-                    overflow: hidden; 
-                    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
-                    transition: transform 0.3s ease-in-out;
-                    cursor: pointer;
-                `;
-                card.onmouseover = () => card.style.transform = "scale(1.05)";
-                card.onmouseleave = () => card.style.transform = "scale(1)";
+      // Fetch properties based on cleaned search input
+      const res = await fetch(`/listing/properties?search=${encodeURIComponent(searchInput)}&type=${encodeURIComponent(propertyType)}`);
+      const data = await res.json();
 
-                card.innerHTML = `
-                    <div style="height: 230px; overflow: hidden;">
-                        <img src="${item.Images[0]}" alt="Property Image" style="width: 100%; height: 100%; object-fit: cover;">
-                    </div>
-                    <div style="padding: 15px;">
-                        <h3 style="margin: 0; font-size: 22px; color: #333; font-weight: 600;">${item.Title}</h3>
-                        <p style="margin: 8px 0; color: #555;"><strong>📍 City:</strong> ${item.City}</p>
-                        <p style="margin: 5px 0; color: #777;"><strong>🏠 Address:</strong> ${item.Location}</p>
-                        <p style="margin: 5px 0; color: #777;"><strong>📏 Area:</strong> ${item.Area} sq.ft.</p>
-                        <p style="margin: 5px 0; color: #777;"><strong>🛏 Beds:</strong> ${item.Bed} | <strong>🛁 Bathrooms:</strong> ${item.Bath}</p>
-                        <p style="margin: 10px 0; color: #444; line-height: 1.5;">${item.Description}</p>
-                        <button onclick="showInterest('${item.PropertyId}')" style="width: 100%; padding: 10px; font-size: 16px; border: none; background: #ff6f61; color: white; border-radius: 5px; cursor: pointer;">
-                            Interested
-                        </button>
-                    </div>
-                `;
+      localStorage.setItem('properties', JSON.stringify(data));
 
-                cardContainer.appendChild(card);
-            });
-        }
+      if (data.length === 0) {
+        document.getElementById('no-properties-message').style.display = 'block';
+        displayProperties([]);
+      } else {
+        displayProperties(data);
+      }
+    }
 
-        function showInterest(propertyTitle) {
-
-            localStorage.setItem("Interest",propertyTitle);
-            
-
-            window.location.href=`/listedproperty`;
-            
-        }
-    </script>
+    // Optional: if needed
+    function showInterest(propertyTitle) {
+      localStorage.setItem("Interest", propertyTitle);
+      window.location.href = `/listedproperty`;
+    }
+  </script>
 
 </body>
 </html>

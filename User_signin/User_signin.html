@@ -18,9 +18,10 @@
 <body>
     <div class="signin-container">
         <div class="left-section">
-            <div class="tagline">
-                <h1>Live<br>Your<br>Live<br>In<br>Your<br>Way</h1>
+            <div class="hero-content">
+                <h1 class="hero-title">Live<br>Your<br>Life<br>In<br>Your<br>Way</h1>
             </div>
+            <div class="overlay"></div>
         </div>
         <div class="right-section">
             <div class="signin-header">
@@ -32,15 +33,6 @@
             </div>
 
             <div class="signin-form">
-                <button class="google-signin">
-                    <img src="google-icon.png" alt="Google Icon">
-                    Continue with Google
-                </button>
-
-                <div class="divider">
-                    <span>OR</span>
-                </div>
-
                 <form id="signin">
                     <div class="form-group">
                         <label for="email">User name or email address</label>
@@ -91,7 +83,10 @@
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("signin").addEventListener("submit", async function (event) {
                 event.preventDefault();
-
+                if(localStorage.getItem("token")){
+                    window.alert("A session already Exists");
+                    return 0;
+                }
                 const Email = document.getElementById('email').value;
                 const Pass = document.getElementById('password').value;
                 const cred = { Email: Email, Pass: Pass };
@@ -109,14 +104,19 @@
                     const data = await response.json();
                     console.log("Success:", data);
 
-                    localStorage.setItem("token",data.Token);
-                    localStorage.setItem("username",data.Username);
-                    localStorage.setItem("Email",data.Email);
-                    localStorage.setItem("KYC",data.Kyc);
 
                     responseMessage.textContent = data.message || "Something went wrong!";
                     responseMessage.style.color = response.ok ? "green" : "red";
                     if(response.ok){
+                        
+                    localStorage.setItem("token",data.Token);
+                    localStorage.setItem("username",data.Username);
+                    localStorage.setItem("Email",data.Email);
+                    localStorage.setItem("KYC",data.Kyc);
+                        window.location.href="/landingpage";
+                    }
+                    else{
+                        window.alert("Incorrect Credentials");
                         window.location.href="/landingpage";
                     }
                 } catch (error) {
