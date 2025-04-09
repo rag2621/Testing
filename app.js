@@ -70,10 +70,10 @@ const verifyToken = (req, res, next) => {
   };
 
 
-const sslOptions = {
+/*const sslOptions = {
     key: fs.readFileSync(path.join(__dirname, "server.key")), 
     cert: fs.readFileSync(path.join(__dirname, "server.cert"))
-};
+};*/
 
 
 const router = express.Router();
@@ -497,7 +497,7 @@ mongoose
     .connect(MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log("✅ MongoDB Connected");
-        https.createServer(sslOptions, app).listen(PORT, () => {
+        app.listen(PORT, () => {
             console.log(`🚀 HTTPS Server running on port ${PORT}`);
         });
     })
